@@ -1,0 +1,42 @@
+from math import *
+
+def colebrook_equation(f, Re, D, epsilon):
+    """
+    Función para calcular el factor de fricción usando la ecuación de Colebrook.
+    
+    Parámetros:
+        - f: Factor de fricción inicial (puede ser cualquier valor inicial).
+        - Re: Número de Reynolds.
+        - D: Diámetro hidráulico.
+        - epsilon: Rugosidad relativa.
+    
+    Retorna:
+        - El factor de fricción calculado.
+    """
+    tol = 1e-6  # Tolerancia para la convergencia
+    max_iter = 1000  # Máximo número de iteraciones
+    
+    # Iteración inicial
+    iter_count = 0
+    error = tol + 1
+    while error > tol and iter_count < max_iter:
+        f_new = (-2 * log10((epsilon / (3.7 * D)) + (2.51 / (Re * sqrt(f)))))**-2
+        error = abs(f_new - f)
+        f = f_new
+        iter_count += 1
+    
+    return f
+
+
+    # Entrada de datos por el usuario
+Re = float(input("Ingrese el número de Reynolds: "))
+D = float(input("Ingrese el diámetro hidráulico (en metros): "))
+epsilon = float(input("Ingrese la rugosidad relativa: "))
+    
+    # Suponiendo un valor inicial para el factor de fricción
+f_guess = 0.02
+    
+    # Calculando el factor de fricción usando la ecuación de Colebrook
+f = colebrook_equation(f_guess, Re, D, epsilon)
+    
+print("El factor de fricción calculado es:", f)
